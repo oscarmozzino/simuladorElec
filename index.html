@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Tablero Eléctrico</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚡ Simulador de Tablero Eléctrico</h1>
+            <p>Sistema de Entrenamiento para Técnicos Electricistas</p>
+        </header>
+
+        <div class="main-grid">
+            <!-- Main Breaker Panel -->
+            <div class="panel">
+                <h2>🔌 Interruptores Principales</h2>
+                
+                <div class="control-group">
+                    <label>Interruptor Principal (Main Breaker):</label>
+                    <button class="btn btn-breaker" id="mainBreakerBtn">OFF</button>
+                </div>
+
+                <div class="control-group">
+                    <label>Interruptor Diferencial (RCD):</label>
+                    <button class="btn btn-breaker" id="differentialBtn">OFF</button>
+                </div>
+
+                <div class="control-group">
+                    <label>Breaker Motor 1 (20A):</label>
+                    <button class="btn btn-breaker" id="motor1BreakerBtn">OFF</button>
+                </div>
+
+                <div class="control-group">
+                    <label>Breaker Motor 2 (20A):</label>
+                    <button class="btn btn-breaker" id="motor2BreakerBtn">OFF</button>
+                </div>
+
+                <div class="control-group">
+                    <label>Breaker Luces (10A):</label>
+                    <button class="btn btn-breaker" id="lightsBreakerBtn">OFF</button>
+                </div>
+
+                <div class="control-group">
+                    <label>Breaker Auxiliar (15A):</label>
+                    <button class="btn btn-breaker" id="auxBreakerBtn">OFF</button>
+                </div>
+            </div>
+
+            <!-- Motor Controls -->
+            <div class="panel">
+                <h2>🔧 Control de Motores</h2>
+                
+                <div class="control-group">
+                    <label>Selector Motor 1:</label>
+                    <button class="btn btn-switch" id="motor1SelectorBtn">OFF</button>
+                </div>
+
+                <div class="status-item">
+                    <span>Contactor Motor 1:</span>
+                    <span class="value" id="motor1ContactorStatus">Abierto</span>
+                </div>
+
+                <div class="status-item">
+                    <span>Estado Motor 1:</span>
+                    <span class="value" id="motor1Status">APAGADO</span>
+                </div>
+
+                <hr style="margin: 20px 0; border: 1px solid #ddd;">
+
+                <div class="control-group">
+                    <label>Selector Motor 2:</label>
+                    <button class="btn btn-switch" id="motor2SelectorBtn">OFF</button>
+                </div>
+
+                <div class="status-item">
+                    <span>Contactor Motor 2:</span>
+                    <span class="value" id="motor2ContactorStatus">Abierto</span>
+                </div>
+
+                <div class="status-item">
+                    <span>Estado Motor 2:</span>
+                    <span class="value" id="motor2Status">APAGADO</span>
+                </div>
+            </div>
+
+            <!-- Meters Panel -->
+            <div class="panel">
+                <h2>📊 Medidores</h2>
+                
+                <div class="control-group">
+                    <label>Voltímetro:</label>
+                    <div class="meter-display" id="voltmeter">0 V</div>
+                </div>
+
+                <div class="control-group">
+                    <label>Amperímetro Total:</label>
+                    <div class="meter-display" id="ammeter">0.0 A</div>
+                </div>
+
+                <div class="control-group">
+                    <label>Medidor de Potencia:</label>
+                    <div class="meter-display" id="powermeter">0 W</div>
+                </div>
+            </div>
+
+            <!-- Current Meters -->
+            <div class="panel">
+                <h2>⚡ Amperímetros Individuales</h2>
+                
+                <div class="status-item">
+                    <span>Corriente Motor 1:</span>
+                    <span class="value" id="motor1Current">0.0 A</span>
+                </div>
+
+                <div class="status-item">
+                    <span>Corriente Motor 2:</span>
+                    <span class="value" id="motor2Current">0.0 A</span>
+                </div>
+
+                <div class="status-item">
+                    <span>Corriente Luces:</span>
+                    <span class="value" id="lightsCurrent">0.0 A</span>
+                </div>
+
+                <div class="status-item">
+                    <span>Corriente Auxiliar:</span>
+                    <span class="value" id="auxCurrent">0.0 A</span>
+                </div>
+
+                <div class="status-item">
+                    <span>Corriente de Fuga:</span>
+                    <span class="value" id="leakageCurrent">0 mA</span>
+                </div>
+            </div>
+
+            <!-- Lights and Auxiliary -->
+            <div class="panel">
+                <h2>💡 Luces y Auxiliares</h2>
+                
+                <div class="control-group">
+                    <label>Interruptor Luces:</label>
+                    <button class="btn btn-switch" id="lightsSwitchBtn">OFF</button>
+                </div>
+
+                <div class="status-item">
+                    <span>Estado Luces:</span>
+                    <span class="value" id="lightsStatus">APAGADO</span>
+                </div>
+
+                <hr style="margin: 20px 0; border: 1px solid #ddd;">
+
+                <div class="control-group">
+                    <label>Interruptor Auxiliar:</label>
+                    <button class="btn btn-switch" id="auxSwitchBtn">OFF</button>
+                </div>
+
+                <div class="status-item">
+                    <span>Estado Auxiliar:</span>
+                    <span class="value" id="auxStatus">APAGADO</span>
+                </div>
+            </div>
+
+            <!-- Alarms and Errors -->
+            <div class="panel">
+                <h2>⚠️ Alarmas y Errores</h2>
+
+                <div class="alarm-display" id="alarmDisplay">
+                    <p class="no-alarm">✓ Sistema Normal</p>
+                </div>
+
+                <div class="status-item">
+                    <span>Código de Error:</span>
+                    <span class="value" id="errorCode">--</span>
+                </div>
+            </div>
+
+            <!-- Diagnostic Mode -->
+            <div class="panel">
+                <h2>🔧 Modo Diagnóstico</h2>
+
+                <div class="control-group">
+                    <label>Nivel de Dificultad:</label>
+                    <select id="difficultySelect">
+                        <option value="1">Nivel 1 - Básico</option>
+                        <option value="2">Nivel 2 - Intermedio</option>
+                        <option value="3">Nivel 3 - Avanzado</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label>Seleccione Diagnóstico:</label>
+                    <select id="diagnosisSelect">
+                        <option value="">-- Seleccione Problema --</option>
+                        <option value="main_breaker_trip">Disparo Interruptor Principal</option>
+                        <option value="differential_trip">Disparo Diferencial</option>
+                        <option value="motor1_overload">Sobrecarga Motor 1</option>
+                        <option value="motor2_overload">Sobrecarga Motor 2</option>
+                        <option value="contactor1_fail">Falla Contactor 1</option>
+                        <option value="contactor2_fail">Falla Contactor 2</option>
+                        <option value="phase_loss">Pérdida de Fase</option>
+                        <option value="ground_fault">Falla a Tierra</option>
+                        <option value="short_circuit">Cortocircuito</option>
+                        <option value="voltage_drop">Caída de Tensión</option>
+                        <option value="loose_connection">Conexión Floja</option>
+                        <option value="motor1_bearing">Rodamiento Motor 1 Defectuoso</option>
+                    </select>
+                </div>
+
+                <button class="btn btn-primary" id="submitDiagnosis">Enviar Diagnóstico</button>
+
+                <div class="diagnosis-result" id="diagnosisResult"></div>
+
+                <div class="fault-hint" id="faultHint" style="display: none;"></div>
+            </div>
+
+            <!-- Performance -->
+            <div class="panel">
+                <h2>📊 Rendimiento</h2>
+
+                <div class="status-item">
+                    <span>Puntuación:</span>
+                    <span class="score-value" id="score">0</span>
+                </div>
+
+                <div class="status-item">
+                    <span>Correctos:</span>
+                    <span class="value success" id="correct">0</span>
+                </div>
+
+                <div class="status-item">
+                    <span>Incorrectos:</span>
+                    <span class="value danger" id="incorrect">0</span>
+                </div>
+
+                <div class="status-item">
+                    <span>Tiempo Transcurrido:</span>
+                    <span class="value" id="timer">00:00</span>
+                </div>
+
+                <div class="status-item">
+                    <span>Dificultad Actual:</span>
+                    <span class="value" id="currentDifficulty">Nivel 1</span>
+                </div>
+
+                <div class="control-buttons">
+                    <button class="btn btn-warning" id="injectFault">⚡ Inyectar Falla Aleatoria</button>
+                    <button class="btn btn-danger" id="resetSystem">🔄 Reiniciar Sistema</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Circuit Diagram -->
+        <div class="diagram-container">
+            <h2>📐 Diagrama del Tablero Eléctrico</h2>
+            <div class="circuit-board">
+                <!-- Main Supply -->
+                <div class="circuit-section">
+                    <div class="section-title">Alimentación Principal</div>
+                    <div class="component">
+                        <div class="component-name">⚡ Suministro 230V</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="supply-indicator"></span>Voltaje: <span id="supply-voltage">0V</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Breaker -->
+                <div class="circuit-section">
+                    <div class="section-title">Protección Principal</div>
+                    <div class="component">
+                        <div class="component-name">🔌 Interruptor Principal</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="main-breaker-indicator"></span><span id="main-breaker-status">OFF</span></span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-name">⚡ Diferencial (30mA)</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="differential-indicator"></span><span id="differential-status">OFF</span></span>
+                            <span>Fuga: <span id="diff-leakage">0mA</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Motor 1 Circuit -->
+                <div class="circuit-section">
+                    <div class="section-title">Circuito Motor 1</div>
+                    <div class="component">
+                        <div class="component-name">🔌 Breaker Motor 1 (20A)</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="motor1-breaker-indicator"></span><span id="motor1-breaker-status">OFF</span></span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-name">🔧 Contactor Motor 1</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="motor1-contactor-indicator"></span><span id="motor1-contactor-diagram">Abierto</span></span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-name">⚙️ Motor 1 (3HP)</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="motor1-indicator"></span><span id="motor1-diagram-status">APAGADO</span></span>
+                            <span><span id="motor1-diagram-current">0.0A</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Motor 2 Circuit -->
+                <div class="circuit-section">
+                    <div class="section-title">Circuito Motor 2</div>
+                    <div class="component">
+                        <div class="component-name">🔌 Breaker Motor 2 (20A)</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="motor2-breaker-indicator"></span><span id="motor2-breaker-status">OFF</span></span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-name">🔧 Contactor Motor 2</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="motor2-contactor-indicator"></span><span id="motor2-contactor-diagram">Abierto</span></span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-name">⚙️ Motor 2 (2HP)</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="motor2-indicator"></span><span id="motor2-diagram-status">APAGADO</span></span>
+                            <span><span id="motor2-diagram-current">0.0A</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Lights Circuit -->
+                <div class="circuit-section">
+                    <div class="section-title">Circuito Iluminación</div>
+                    <div class="component">
+                        <div class="component-name">🔌 Breaker Luces (10A)</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="lights-breaker-indicator"></span><span id="lights-breaker-status">OFF</span></span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-name">💡 Luces</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="lights-indicator"></span><span id="lights-diagram-status">APAGADO</span></span>
+                            <span><span id="lights-diagram-current">0.0A</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Auxiliary Circuit -->
+                <div class="circuit-section">
+                    <div class="section-title">Circuito Auxiliar</div>
+                    <div class="component">
+                        <div class="component-name">🔌 Breaker Auxiliar (15A)</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="aux-breaker-indicator"></span><span id="aux-breaker-status">OFF</span></span>
+                        </div>
+                    </div>
+                    <div class="component">
+                        <div class="component-name">🔧 Carga Auxiliar</div>
+                        <div class="component-status">
+                            <span><span class="status-indicator" id="aux-indicator"></span><span id="aux-diagram-status">APAGADO</span></span>
+                            <span><span id="aux-diagram-current">0.0A</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Simulador de Tablero Eléctrico v1.0 | Herramienta de Entrenamiento para Electricistas</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
